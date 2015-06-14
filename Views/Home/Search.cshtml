@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DrinkApplication.Models.DrinkModel>
+
+@{
+    ViewBag.Title = "Search";
+}
+@section scripts {
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#result').click(function () {
+            var text = $('#searchTxt').attr('value');
+            window.location = "/Home/Search?text=" + text;
+        });
+    });
+</script>
+}
+<h2>Search for drinks!</h2>
+
+<form class="showResults">
+    <input type="search" id="searchTxt" name="text" />
+    <input type="submit" id="result" value="szukaj" />
+</form>
+<br />
+<div>
+    <table class="resultTable">
+        <tr>
+            <td width="33%">
+                Name
+            </td>
+            <td>
+                Ingredients
+            </td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="40%">
+                    @Html.DisplayFor(modelItem => item.drink.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ingredients)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

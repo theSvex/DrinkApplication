@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DrinkApplication.Models.Drink>
+@{
+    ViewBag.Title = "Show Favourite Drinks!";
+}
+
+@if (Model != null)
+{
+<h2>Favourites!</h2>
+
+<div class="favItems">
+    <ul type="decimal" class="favList" style="font-size: 18px; margin: 25px 0; padding-left: 45px">
+        @for ( int i = 0; i < Model.Count(); i++ )
+        {
+            <li>
+                <h5>
+                    @Html.ActionLink(Model.ElementAt(i).Name, "Search", "Home", new { text = Model.ElementAt(i).Name }, null)
+                </h5>
+                <span style="text-align: right">
+                    @Html.ActionLink("Remove", "RemoveFav", "Home", new { id = Model.ElementAt(i).Drink_Id }, null)
+                </span>
+                <br />
+            </li>
+        }
+    </ul>
+</div>
+}
+else
+{
+    <h2>You have to log in first to display favourite drinks!</h2>
+}

@@ -1,0 +1,82 @@
+﻿using DrinkApplication.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace DrinkApplication.Controllers
+{
+    public class HomeController : Controller
+    {
+        private IngredientsContext IC = new IngredientsContext();
+        private DisplayModel disp = new DisplayModel();
+
+        public ActionResult Index()
+        {
+            ViewBag.Message = "This is aplication called DrinkApp";
+
+            disp.alcohols = IC.Ingredients.Where(x => x.Type_Id == 1).ToList();
+            disp.drinks = IC.Ingredients.Where(x => x.Type_Id == 4).ToList();
+            disp.juices = IC.Ingredients.Where(x => x.Type_Id == 3).ToList();
+            disp.vegetables = IC.Ingredients.Where(x => x.Type_Id == 5).ToList();
+            disp.fruits = IC.Ingredients.Where(x => x.Type_Id == 2).ToList();
+
+            var tmp = IC.Drinks.ToList();
+            var tmp2 = IC.Ing4Drinks.ToList();
+
+            disp.drinkModel = new List<DrinkModel>();
+            foreach (var item in tmp)
+            {
+                disp.drinkModel.Add(new DrinkModel()
+                {
+                    drink = new Drink()
+                    {
+                        Drink_Id = item.Drink_Id,
+                        Name = item.Name,
+                        Comment = item.Comment
+                    },
+                    ingredients = tmp2
+                        .Where(x => x.Drink_Id == item.Drink_Id)
+                        .Select(x => x.IngId.Ing_Name)
+                        .ToList()
+                        .Aggregate((a, x) => a + ", " + x)
+                });
+            }
+            return View(disp);
+        }
+
+        public ActionResult AddNew()
+        {
+            ViewBag.Message = "Add new item";
+
+            return View();
+        }
+
+        public ActionResult AddFav()
+        {
+            ViewBag.Message = "Add item do favourites";
+
+            return View();
+        }
+
+        public ActionResult Popular()
+        {
+            ViewBag.Message = "Most popular choices";
+            List<string> numbers = new List<string>() { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+            ViewBag.Numbers = numbers;
+
+            return View();
+        }
+
+        public ActionResult ResultAction()
+        {
+            return View();
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+    }
+}

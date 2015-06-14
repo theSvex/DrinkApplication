@@ -1,0 +1,17 @@
+﻿@model IEnumerable<DrinkApplication.Models.Drink>
+
+@{
+    ViewBag.Title = "Popular";
+}
+
+
+<h2>Most popular drinks</h2>
+<ol class="round">
+    @for (int i = 0; i < @ViewBag.Numbers.Count; i++)
+    {
+        <li class="@ViewBag.Numbers[i]">
+            <h4>@Model.ElementAt(i).Name</h4>
+            <br />
+        </li>
+    }
+</ol>

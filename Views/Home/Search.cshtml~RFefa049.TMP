@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DrinkApplication.Models.DrinkModel>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search for drinks!</h2>
+
+<form class="showResults" action="/Home/Search" >
+    <input type="search" name="drinksearch" />
+    <input type="submit" value="szukaj" />
+</form>
+
+@if (Model != null)
+{
+    <div class="results">
+        <table class="resultTable">
+            <tr>
+                <td width="33%">
+                    Name
+                </td>
+                <td>
+                    Ingredients
+                </td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="33%">
+                        @Html.DisplayFor(modelItem => item.drink.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ingredients)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

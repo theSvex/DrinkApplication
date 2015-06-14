@@ -1,0 +1,77 @@
+﻿@model DrinkApplication.Models.DisplayModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts {
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.8.2.js"></script>
+<script src="//code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var tmpArr = [];
+        $(".accordion").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            autoHeight: false
+        });
+        $('input[type="checkbox"]').change(function () {
+            var tmp = $(this).attr('value');
+            if (tmpArr.indexOf(tmp) == -1)
+            {
+                tmpArr.push(tmp);
+            }
+            else
+            {
+                tmpArr.splice(indexOf(tmp), 1);
+            }
+        });
+        var str = "";
+        $('#result').click(function () {
+            tmpArr.forEach(function (x) {
+                str = str + x + ";";
+            });
+        window.location = "/Home/ResultAction?str=" + str;
+        });
+    });
+</script>
+}
+
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Message</h1>
+            </hgroup>
+            <h3>
+                Go ahead and select ingredients for Your drink, then pick avaible ones from the list!
+            </h3>
+        </div>
+    </section>
+}
+
+<div class="accordion">
+    @foreach (var item in Model.dic)
+    {
+        <h3>@item.Key</h3>
+    <div>
+        @foreach (var item2 in item.Value)
+        {
+        <span style="margin: 0px 5px; white-space:nowrap">
+            @Html.CheckBox(item2.Ing_Name, new { Value = item2.Ing_Id }) @item2.Ing_Name
+        </span>
+        }
+    </div>
+    }
+</div>
+
+<br />
+<div class="showresult">
+    <form>
+        <button type="button" id="result" style="float: right">Find Me a Drink!</button>
+    </form>
+</div>
+
+

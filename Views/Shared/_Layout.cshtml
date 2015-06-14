@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - DrinkApp</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        
+        @Scripts.Render("~/bundles/modernizr")
+        
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("DrinkApplication", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Search", "Search", "Home")</li>
+                            <li>@Html.ActionLink("Add New", "AddNew", "Home")</li>
+                            <li>@Html.ActionLink("Show Favourites", "AddFav", "Home")</li>
+                            <li>@Html.ActionLink("Most Popular", "Popular", "Home")</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Styles.Render("~/bundles/jquery.rateit")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

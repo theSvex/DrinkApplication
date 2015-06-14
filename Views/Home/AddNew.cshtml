@@ -1,0 +1,109 @@
+﻿@model DrinkApplication.Models.DisplayModel
+
+@{
+    ViewBag.Title = "Add New Drink!";
+}
+
+@section scripts {
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.8.2.js"></script>
+<script src="//code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var tmpArr = [];
+        $(".accordion").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            autoHeight: false
+        });
+        $('input[type="checkbox"]').change(function () {
+            var tmp = $(this).attr('value');
+            tmpArr.push(tmp);
+        });
+        $("#addNew").click(function () {
+
+            if ($("#name").val() != "" && $("#name").val() != null)
+            {
+                $("#name").css({
+                    "border-width": "0px"
+                });
+                var str = "";
+                tmpArr.forEach(function (x) {
+                    str = str + x + ";";
+                });
+
+                var Drink = {
+                    "Name": $("#name").val(),
+                    "Comment": $("#comment").val()
+                };
+                var asd = {
+                    "drink": Drink,
+                    "ings": str
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/AddNewRecord',
+                    data: JSON.stringify(asd),
+                    contentType: "application/json;charset=utf-8",
+                    processData: true,
+                    success: function (data, status, xhr) {
+                        window.location = "/Home/Search";
+                    }/*,
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }*/
+                });
+            }
+            else
+            {
+                $("#name").css({
+                    "border-color": "#ff0000",
+                    "border-width": "3px",
+                    "border-style": "solid"
+                });
+                alert("wprowadz nazwe drinka!");
+            }
+            
+        });
+    });
+</script>
+}
+
+@if (Model != null)
+{
+    <h2>Add new drink</h2>
+    <br />
+    <div class="name">
+        <label>Nazwa nowego drinka: </label>
+        <input type="text" id="name" />
+    </div>
+    
+    <div class="accordion">
+    @foreach (var item in Model.dic)
+    {
+        <h3>@item.Key</h3>
+    <div>
+        @foreach (var item2 in item.Value)
+        {
+        <span style="margin: 0px 5px; white-space:nowrap">
+            @Html.CheckBox(item2.Ing_Name, new { Value = item2.Ing_Id }) @item2.Ing_Name
+        </span>
+        }
+    </div>
+    }
+</div>
+    <br />
+    <div class="comment">
+        <label>Komentarz do drinka</label>
+        <input type="text" id="comment" />
+    </div>
+    
+<div class="addNew">
+    <button type="button" id="addNew" style="float: right">Add New Drink!</button>
+</div>
+}
+else
+{
+<h2>You have to log in first to add new drink!</h2>
+}
